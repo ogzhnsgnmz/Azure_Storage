@@ -1,0 +1,12 @@
+﻿﻿@{
+    ViewData["Title"] = "ShowWatermark";
+}
+
+<br />
+<div style="max-width:1100px; margin:auto; background-color:white">
+    <div id="images">
+        @foreach (var item in ViewBag.watermarkBlobs as List<FileBlob>)
+        {
+            <img style="max-width:550px; float:left;" data-name="@item.Name" src="@item.Url" />
+        }
+    </div>

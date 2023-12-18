@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@section Scripts
+{
+    <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
+    <script type="text/javascript">
+
+        toastr.options = {
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "timeOut": "5000"
+        };
+
+
+        var fileList = document.getElementById('fileList');
+
+        // Dosya sürükleme olaylarını dinle
+        dropArea.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dropArea.classList.add('highlight');
+        });
+
+        dropArea.addEventListener('dragleave', function () {
+            dropArea.classList.remove('highlight');
+        });
+
+        dropArea.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dropArea.classList.remove('highlight');
+
+            var files = e.dataTransfer.files;
+            displayFileNames(files);
+        });
+
+        // Dosya inputuna tıklama olayını dinle
+        dropArea.addEventListener('click', function () {
+            document.getElementById('pictureImages').click();
+        });
+
+        // Dosya seçildiğinde olayını dinle
+        document.getElementById('pictureImages').addEventListener('change', function () {
+            var files = this.files;
+            displayFileNames(files);
+        });
+
+        function displayFileNames(files) {
+            fileList.innerHTML = '';
+
+            for (var i = 0; i < files.length; i++) {
+                var listItem = document.createElement('div');
+                listItem.textContent = 'Dosya: ' + files[i].name;
+                fileList.appendChild(listItem);
+            }
+        }
+
+        $(document).ready(() => {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/NotificationHub").build();
+
+            connection.start().then(() => {
+
+                console.log("Hub Connection Id:" + connection.connectionId)
+            });
+
+            connection.on("NotifyCompleteWatermarkProcess", () => {
+
+                toastr.success('Yazı ekleme işkemi başarıyla gerçekleşti!', 'Başarılı');
+            })
+
+            var pictures = new Array();
+
+            var UserId = "@ViewBag.UserId";
+            var City = "@ViewBag.City";
+
+            $("#AddWatermark").click(() => {
+
+                let pictureWatermarkQueue = {
+                    "UserId": UserId, "City": City, "ConnectionId": connection.connectionId, "WatermarkText": $("#watermarkText").val(), "Pictures": pictures
+                };
+
+                $.post("/Home/AddWatermark", pictureWatermarkQueue, (data) => {
+
+                    toastr.info('Resimlerinize yazı ekleniyor.!', 'Bilgi');
+                })
+
+            })
+
+            $("#images img").click(function () {
+
+                $(this).css("border", "3px dashed red");
+
+                pictures.push($(this).attr("data-name"));
+
+                console.log(pictures);
+            })
+
+        })
+    </script>
+}
+
+<div>
+    <div style="max-width:1100px; margin:auto;">
+        <div class="forms">
+            <form id="pictureForm" class="form form-inline" asp-action="Index" asp-controller="Home" method="post" enctype="multipart/form-data">
+                <div class="drop-area" id="dropArea">
+                    <label for="pictureImages">Upload pictures</label>
+                    <input type="file" name="pictures" id="pictureImages" multiple accept="image/*" style="display:none" multiple>
+                    <p>Dosyalarınızı sürükleyip bırakın ya da tıklayın</p>
+                </div>
+                <div id="fileList"></div><br>
+                <input class="btn btn-primary" type="submit" value="Add Picture" />
+            </form>
+            <div class="form">
+                <label for="Content">Content:</label>
+                <input type="text" id="watermarkText">
+                <input class="btn btn-primary" type="submit" value="Add Watermark" id="AddWatermark" />
+            </div>
+        </div>
+        <div id="images" class="pictures">
+            <label for="Content">Pictures</label>
+            @foreach (var item in ViewBag.fileBlobs as List<FileBlob>)
+            {
+                <img style="width:130px;margin:5px;" data-name="@item.Name" src="@item.Url" />
+            }
+        </div>
+        <div id="images" class="pictures">
+            <label for="Content">Watarmark Pictures</label>
+            @foreach (var item in ViewBag.watermarkBlobs as List<FileBlob>)
+            {
+                <img style="width:130px;margin:5px;" data-name="@item.Name" src="@item.Url" />
+            }
+        </div>
+    </div>
+</div>
+<div id="outputDiv"></div>

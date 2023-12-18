@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "WatermarkQueueFunction": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7156",
+      "launchBrowser": false
+    }
+  }
+}
