@@ -9,7 +9,7 @@ public class AzureQueue
 
     public AzureQueue(string queueName)
     {
-        var connectionString = "DefaultEndpointsProtocol=https;AccountName=projectstorage0;AccountKey=8OV1y2vOFMzEZjZwANhU8Sz+uY99odgdfTWOXyYDQnE+njqXv5xPXMYWKvOVL3IcJ1zos1Tjnbc0+ASt0t8vpA==;EndpointSuffix=core.windows.net";
+        var connectionString = "DefaultEndpointsProtocol=https;AccountName=projectstorage00;AccountKey=SZvnl6Nj761fMfRf4Y2oirwIpL3lSHSCcOvzPxLNlnDqTrQ6+mV6x72JgDyR7Skfn9dqCXeFSyb9+AStTTozPg==;EndpointSuffix=core.windows.net";
         _queueClient = new QueueClient(connectionString, queueName);
         //_queueClient = new QueueClient(ConnectionStrings.AzureStorageConnectionString, queueName);
         _queueClient.CreateIfNotExists();

@@ -42,18 +42,6 @@ namespace WebApp.Controllers
 
             ViewBag.fileBlobs = fileBlobs;
 
-            List<FileBlob> watermarkBlobs = new List<FileBlob>();
-
-            UserPicture userPicture = await _noSqlStorage.Get(UserId, City);
-
-            ViewBag.pictures = userPicture.WatermarkPaths;
-
-            userPicture.WatermarkPaths.ForEach(x => {
-                watermarkBlobs.Add(new FileBlob { Name = x, Url = $"{_blobStorage.BlobUrl}/{ContainerName.watermarkpictures}/{x}" });
-            });
-
-            ViewBag.watermarkBlobs = watermarkBlobs;
-
             return View();
         }
 

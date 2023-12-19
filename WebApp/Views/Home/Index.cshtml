@@ -64,7 +64,7 @@
 
             connection.on("NotifyCompleteWatermarkProcess", () => {
 
-                toastr.success('Yazı ekleme işkemi başarıyla gerçekleşti!', 'Başarılı');
+                toastr.success('İmza ekleme işkemi başarıyla gerçekleşti!', 'Başarılı');
             })
 
             var pictures = new Array();
@@ -80,7 +80,7 @@
 
                 $.post("/Home/AddWatermark", pictureWatermarkQueue, (data) => {
 
-                    toastr.info('Resimlerinize yazı ekleniyor.!', 'Bilgi');
+                    toastr.info('Resimlerinize imza ekleniyor.!', 'Bilgi');
                 })
 
             })
@@ -111,7 +111,7 @@
                 <input class="btn btn-primary" type="submit" value="Add Picture" />
             </form>
             <div class="form">
-                <label for="Content">Content:</label>
+                <label for="Content">Signature:</label>
                 <input type="text" id="watermarkText">
                 <input class="btn btn-primary" type="submit" value="Add Watermark" id="AddWatermark" />
             </div>
@@ -119,13 +119,6 @@
         <div id="images" class="pictures">
             <label for="Content">Pictures</label>
             @foreach (var item in ViewBag.fileBlobs as List<FileBlob>)
-            {
-                <img style="width:130px;margin:5px;" data-name="@item.Name" src="@item.Url" />
-            }
-        </div>
-        <div id="images" class="pictures">
-            <label for="Content">Watarmark Pictures</label>
-            @foreach (var item in ViewBag.watermarkBlobs as List<FileBlob>)
             {
                 <img style="width:130px;margin:5px;" data-name="@item.Name" src="@item.Url" />
             }

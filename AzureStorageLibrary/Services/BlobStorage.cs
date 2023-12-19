@@ -11,12 +11,12 @@ public class BlobStorage : IBlobStorage
 
     public BlobStorage()
     {
-        var connectionString = "DefaultEndpointsProtocol=https;AccountName=projectstorage0;AccountKey=8OV1y2vOFMzEZjZwANhU8Sz+uY99odgdfTWOXyYDQnE+njqXv5xPXMYWKvOVL3IcJ1zos1Tjnbc0+ASt0t8vpA==;EndpointSuffix=core.windows.net";
+        var connectionString = "DefaultEndpointsProtocol=https;AccountName=projectstorage00;AccountKey=SZvnl6Nj761fMfRf4Y2oirwIpL3lSHSCcOvzPxLNlnDqTrQ6+mV6x72JgDyR7Skfn9dqCXeFSyb9+AStTTozPg==;EndpointSuffix=core.windows.net";
         _blobServiceClient = new BlobServiceClient(connectionString);
         //_blobServiceClient = new BlobServiceClient(ConnectionStrings.AzureStorageConnectionString);
     }
 
-    public string BlobUrl => "https://projectstorage0.blob.core.windows.net";
+    public string BlobUrl => "https://projectstorage00.blob.core.windows.net";
     
     public async Task DeleteAsync(string fileName, ContainerName containerName)
     {
